@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: pyshowinfopod
+  name: pyshowinfopod-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: pyshowinfopod
+  template:
+    metadata:
+      labels:
+        run: pyshowinfopod
+    spec:
+      # volumes:
+      # - name: www
+      #   persistentVolumeClaim:
+      #     claimName: pvc-nfs-pv1
+      containers:
+      - image: joejeff/pyshowinfopod:latest
+        name: pyshowinfopod
+        ports:
+        - containerPort: 5000
+        # volumeMounts:
+        # - name: www
+        #   mountPath: /usr/share/nginx/html
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP 
+
+#https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
