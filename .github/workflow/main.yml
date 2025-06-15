@@ -1,0 +1,8 @@
+name: Deploy
+
+jobs:
+    build:
+        runs-on: self-hosted
+        steps:
+            - name: Build
+              run: echo "Isso é um teste"
