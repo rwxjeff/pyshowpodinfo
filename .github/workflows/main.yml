@@ -1,8 +1,21 @@
 name: Deploy
 
+on:
+    push:
+        branches: [main]
+
 jobs:
     build:
         runs-on: self-hosted
         steps:
             - name: Build
               run: echo "Isso é um teste"
+
+    deploy:
+        runs-on: self-hosted
+        environment: dev
+        needs: build
+
+        steps:
+            - name: Repo Checkout
+              uses: actions/checkout@v4.2.2
